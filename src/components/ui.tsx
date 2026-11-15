@@ -34,7 +34,7 @@ export function Button({ variant = "soft", size = "md", className, type = "butto
 
 export function Card({ className, children, ...rest }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cx("clay p-5 sm:p-6", className)} {...rest}>
+    <div className={cx("clay min-w-0 p-5 sm:p-6", className)} {...rest}>
       {children}
     </div>
   );

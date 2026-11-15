@@ -1,12 +1,13 @@
 import "server-only";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 
 /**
  * One small database interface, two engines behind it:
  *  - DATABASE_URL set  -> a real Postgres server (Supabase, Neon, ...) via `pg`.
  *  - otherwise         -> PGlite, Postgres compiled to run inside this process,
- *                         stored in the .data/ folder. No setup needed.
+ *                         stored in ~/.studyclay (or DATA_DIR). No setup needed.
  * Both speak the same SQL, so there is exactly one schema and one set of queries.
  */
 
@@ -188,7 +189,9 @@ async function openPglite(): Promise<Database> {
   let mode: Database["mode"] = "local";
   let pg: InstanceType<typeof PGlite>;
   try {
-    const dir = path.join(process.cwd(), ".data", "pglite");
+    // Kept outside the project folder: the dev server watches the project and
+    // would reload the page every time the database file changed.
+    const dir = process.env.DATA_DIR?.trim() || path.join(os.homedir(), ".studyclay", "data");
     fs.mkdirSync(dir, { recursive: true });
     pg = new PGlite(dir);
     await pg.waitReady;

@@ -28,6 +28,7 @@ export function aiProblem(err: unknown): string {
   if (err instanceof Anthropic.RateLimitError) return "Claude is rate limited right now. Wait a minute and try again.";
   if (err instanceof Anthropic.APIConnectionError) return "Could not reach Claude. Check your internet connection and try again.";
   if (err instanceof Anthropic.APIError) return `Claude returned an error (${err.status ?? "unknown"}). Try again in a moment.`;
+  if (err instanceof Anthropic.AnthropicError) return "Claude's answer could not be read this time. Please try again.";
   console.error("[study-planner] AI error", err);
   return "The AI request failed unexpectedly. Your data is unchanged.";
 }

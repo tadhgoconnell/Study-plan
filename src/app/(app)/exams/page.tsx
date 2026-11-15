@@ -89,7 +89,7 @@ export default function ExamsPage() {
       {upcoming.length === 0 ? (
         <Card><Empty icon={<GraduationCap size={28} />} title="No upcoming exams">Add a test or exam with its date and topics, and revision sessions will be planned in the run-up.</Empty></Card>
       ) : (
-        <div className="grid items-start gap-5 xl:grid-cols-2">
+        <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-5 xl:grid-cols-2">
           {upcoming.map(({ exam, next }) => {
             const row = next!;
             const subject = byId.get(exam.subjectId);

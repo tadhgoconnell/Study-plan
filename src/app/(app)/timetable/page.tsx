@@ -160,7 +160,7 @@ export default function TimetablePage() {
         <div className="mt-4 flex flex-wrap gap-2">{(Object.keys(TYPES) as EntryType[]).map((t) => <Badge key={t} tone={TYPES[t].tone}>{TYPES[t].label}</Badge>)}</div>
       </Card>
 
-      <div className="grid items-start gap-5 lg:grid-cols-2">
+      <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-5 lg:grid-cols-2">
         <Card>
           <CardTitle hint="Confidence and attention steer how much time each subject gets." action={<Button size="sm" onClick={() => setSubject({ name: "", priority: 2, confidence: 3, color: "" })}><Plus size={15} strokeWidth={3} /> Add</Button>}>Subjects</CardTitle>
           {subjects.length ? (

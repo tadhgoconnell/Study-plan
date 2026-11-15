@@ -38,6 +38,7 @@ function DayColumn({ state, date, from, to, onOpen, onCreate, onDropSession }: {
 
   return (
     <div
+      data-day={date}
       className={cx("relative border-l border-line", isToday && "bg-grape-50/60", off && "hatch")}
       style={{ height: ((to - from) / 60) * HOUR }}
       onClick={(e) => { if (e.target === e.currentTarget && date >= state.today) onCreate(fromMin(minuteAt(e))); }}

@@ -404,15 +404,19 @@ function analyse(input: PlanInput, mode: PlanMode): Ctx {
 
     // 5. Keep what is already scheduled unless a subject is clearly over or under.
     const need = new Map<string, number>();
+    const scheduledFor = (id: string) =>
+      ctx.kept.filter((k) => k.subjectId === id && weekStart(k.date) === ws).reduce((n, k) => n + dur(k), 0) +
+      input.sessions
+        .filter((k) => k.subjectId === id && k.date === input.today && k.status === "planned" && !isFuture(k) && weekStart(k.date) === ws)
+        .reduce((n, k) => n + dur(k), 0);
+    // When some subject is clearly short of time, over-served subjects give theirs up
+    // readily; otherwise small surpluses are left alone so the plan stays stable.
+    const starved = active.reduce((n, s) => n + Math.max(0, (remaining.get(s.id) ?? 0) * scale - scheduledFor(s.id)), 0) >= 45;
     for (const s of active) {
       const want = (remaining.get(s.id) ?? 0) * scale;
       const mine = () => ctx.kept.filter((k) => k.subjectId === s.id && weekStart(k.date) === ws);
-      let have =
-        mine().reduce((n, k) => n + dur(k), 0) +
-        input.sessions
-          .filter((k) => k.subjectId === s.id && k.date === input.today && k.status === "planned" && !isFuture(k) && weekStart(k.date) === ws)
-          .reduce((n, k) => n + dur(k), 0);
-      const surplusTolerance = Math.max(30, have * 0.35);
+      let have = scheduledFor(s.id);
+      const surplusTolerance = starved ? 20 : Math.max(30, have * 0.35);
       if (have - want > surplusTolerance) {
         const rank: Record<Priority, number> = { low: 0, medium: 1, high: 2 };
         const candidates = mine()

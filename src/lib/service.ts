@@ -359,6 +359,7 @@ async function saveSessionTx(tx: Queryable, input: PlanInput, s: z.infer<typeof 
   if (s.id && !existing) throw new UserError("That session no longer exists. Refresh and try again.");
   if (existing && existing.status !== "planned") throw new UserError("That session is part of your study history and cannot be rescheduled. You can still edit its log.");
   if (s.date < input.today) throw new UserError("Sessions can only be planned for today or later. To record past study, add it to the Study Log.");
+  if (input.overrides.some((o) => o.date === s.date && o.type === "off")) throw new UserError(`${fmtDate(s.date)} is marked as a day off. Remove the day off in My Timetable first if you want to study then.`);
   const problem = placementProblem(input, s, s.id);
   if (problem) throw new UserError(problem);
   if (existing) {

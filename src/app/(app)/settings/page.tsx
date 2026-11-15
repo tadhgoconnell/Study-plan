@@ -55,7 +55,7 @@ export default function SettingsPage() {
         </Card>
       )}
 
-      <div className="grid items-start gap-5 lg:grid-cols-2">
+      <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-5 lg:grid-cols-2">
         <Card>
           <CardTitle hint="The planner never books more than these limits, however much time is free.">Study preferences</CardTitle>
           <form className="space-y-4" onSubmit={async (e) => { e.preventDefault(); await run("settings.save", s, { success: "Preferences saved." }); }}>
@@ -94,7 +94,7 @@ export default function SettingsPage() {
           </form>
         </Card>
 
-        <div className="space-y-5">
+        <div className="min-w-0 space-y-5">
           <Card>
             <CardTitle action={<Badge tone={state.ai.configured ? "mint" : "coral"}>{state.ai.configured ? <CircleCheck size={12} strokeWidth={3} /> : <CircleAlert size={12} strokeWidth={3} />}{state.ai.configured ? "Connected" : "Not connected"}</Badge>}>
               <span className="inline-flex items-center gap-2"><KeyRound size={19} strokeWidth={2.6} /> Claude connection</span>
@@ -121,7 +121,7 @@ export default function SettingsPage() {
             </CardTitle>
             <p className="text-sm text-ink-soft">
               {state.storage === "postgres" && "Your data is saved in the Postgres database set in DATABASE_URL."}
-              {state.storage === "local" && <>Your data is saved in a database file inside this app&apos;s <Code>.data</Code> folder on this computer. To host the app online, set <Code>DATABASE_URL</Code> to a Postgres database (for example a free Supabase project) so the data lives there instead.</>}
+              {state.storage === "local" && <>Your data is saved in a local database on this computer (the <Code>.studyclay</Code> folder in your home directory). To host the app online, set <Code>DATABASE_URL</Code> to a Postgres database (for example a free Supabase project) so the data lives there instead.</>}
               {state.storage === "memory" && <>This server cannot write files, so data is being held in memory and will be lost on restart. Set <Code>DATABASE_URL</Code> to a Postgres connection string (for example from Supabase: Project Settings, Database, Connection string) and redeploy.</>}
             </p>
             <div className="mt-4 flex flex-wrap gap-2">

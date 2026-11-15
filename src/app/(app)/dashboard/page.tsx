@@ -42,7 +42,7 @@ export default function DashboardPage() {
         <Link href="/assistant"><Button variant="sun"><Bot size={18} strokeWidth={2.6} /> Ask the assistant</Button></Link>
       </PageHeader>
 
-      <div className="grid items-start gap-5 lg:grid-cols-5">
+      <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-5 lg:grid-cols-5">
         <Card className="lg:col-span-3">
           <CardTitle hint={dueSubjects.length ? "Tap a session to mark it done, missed, or to move it." : undefined}>Today</CardTitle>
           <div className="mb-4 grid grid-cols-3 gap-3">

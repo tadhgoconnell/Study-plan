@@ -55,8 +55,8 @@ export default function PlannerPage() {
         </div>
       )}
 
-      <div className="grid items-start gap-5 lg:grid-cols-3">
-        <div className="space-y-4 lg:col-span-2">
+      <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-5 lg:grid-cols-3">
+        <div className="min-w-0 space-y-4 lg:col-span-2">
           <Card className="flex flex-wrap items-center justify-between gap-3 py-4">
             <div className="flex items-center gap-2">
               <Button size="sm" onClick={() => setOffset(offset - 1)} aria-label="Previous week"><ChevronLeft size={18} strokeWidth={3} /></Button>
@@ -109,7 +109,7 @@ export default function PlannerPage() {
           })}
         </div>
 
-        <div className="space-y-5 lg:sticky lg:top-6">
+        <div className="min-w-0 space-y-5 lg:sticky lg:top-6">
           <Card>
             <CardTitle hint="Planned time this week">Subject balance</CardTitle>
             {week.bySubject.some((r) => r.planned) ? (

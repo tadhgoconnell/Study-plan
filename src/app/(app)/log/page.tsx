@@ -55,8 +55,8 @@ export default function LogPage() {
         <Card className="bg-sun-soft"><p className="text-sm font-extrabold text-[#7a5600]/80">Extra, unplanned study</p><p className="text-3xl font-black text-[#7a5600]">{fmtDuration(extra)}</p></Card>
       </div>
 
-      <div className="grid items-start gap-5 lg:grid-cols-5">
-        <div className="space-y-5 lg:col-span-2">
+      <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-5 lg:grid-cols-5">
+        <div className="min-w-0 space-y-5 lg:col-span-2">
           <Card>
             <CardTitle hint="Sessions due so far this week against time logged">Planned versus actual</CardTitle>
             <div className="overflow-x-auto">
