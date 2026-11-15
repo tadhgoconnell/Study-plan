@@ -12,9 +12,9 @@
   "dependencies": {
     "@anthropic-ai/sdk": "latest",
     "@electric-sql/pglite": "latest",
+    "@fontsource-variable/nunito": "^5.3.0",
     "clsx": "^2.1.1",
     "fflate": "^0.8.2",
-    "geist": "latest",
     "lucide-react": "^1.72.0",
     "next": "16.4.6",
     "pg": "^8.23.1",

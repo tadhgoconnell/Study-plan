@@ -3,7 +3,7 @@ import type { Exam, Override, PlanInput, Session, StudyLog, Subject, TimetableEn
 import { DEFAULT_SETTINGS } from "./types";
 import { addDays, fromMin, toMin, weekStart } from "./time";
 
-export const SUBJECT_COLORS = ["#7c5cff", "#ff6b9d", "#22c1a4", "#ffa23a", "#3d9bff", "#f25c54", "#a3c93a", "#c66bff"];
+export const SUBJECT_COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"];
 
 let counter = 0;
 const id = (p: string) => `${p}_${(++counter).toString(36)}${Math.random().toString(36).slice(2, 8)}`;
@@ -72,10 +72,10 @@ export function sampleData(today: string, nowTime: string): PlanInput {
     [-8, physics, "16:15", "Independent practice questions", 50, "missed", "Practice questions", "practice"],
     [-8, english, "19:30", "Essay plan for the set text", 45, "completed", "Summarising", "study"],
     [-7, maths, "16:15", "Exam-style questions on Algebra", 50, "completed", "Practice questions", "practice"],
-    [-6, biology, "13:30", "Revise Enzymes", 60, "partial", "Active recall", "revision"],
-    [-6, history, "15:00", "Review this week's notes from memory", 40, "completed", "Active recall", "revision"],
-    [-5, chemistry, "11:00", "Revise Bonding", 50, "completed", "Flashcards", "revision"],
-    [-5, physics, "14:00", "Homework and class follow-up", 45, "completed", "Homework", "homework"],
+    [-6, biology, "16:15", "Revise Enzymes", 60, "partial", "Active recall", "revision"],
+    [-6, history, "19:30", "Review this week's notes from memory", 40, "completed", "Active recall", "revision"],
+    [-5, chemistry, "16:15", "Revise Bonding", 50, "completed", "Flashcards", "revision"],
+    [-5, physics, "19:30", "Homework and class follow-up", 45, "completed", "Homework", "homework"],
     [-4, maths, "16:15", "Revise Functions", 45, "completed", "Active recall", "revision"],
     [-4, english, "19:30", "Review this week's notes from memory", 40, "missed", "Active recall", "revision"],
     [-3, biology, "19:30", "Exam-style questions on Enzymes", 45, "completed", "Practice questions", "practice"],

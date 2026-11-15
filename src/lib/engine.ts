@@ -213,6 +213,8 @@ interface Ctx {
   /** Sessions removed only because their slot became impossible; their work is re-placed. */
   displaced: Map<string, Session[]>;
   budget: Map<string, number>;
+  /** Hard ceiling per day, whatever the even spread says. */
+  cap: Map<string, number>;
   placed: Map<string, number>;
   needs: Map<string, Map<string, number>>;
   reasons: Map<string, string>;
@@ -286,6 +288,7 @@ function analyse(input: PlanInput, mode: PlanMode): Ctx {
     rejected: [],
     displaced: new Map(),
     budget: new Map(),
+    cap: new Map(),
     placed: new Map(),
     needs: new Map(),
     reasons: new Map(),
@@ -371,6 +374,7 @@ function analyse(input: PlanInput, mode: PlanMode): Ctx {
     for (const d of weekDays) {
       ctx.budget.set(d, capTotal > 0 ? (remainingBudget * (cap.get(d) ?? 0)) / capTotal : 0);
       ctx.placed.set(d, scheduledMinutes(d));
+      ctx.cap.set(d, cap.get(d) ?? 0);
     }
 
     // 4. Split the week between subjects by how much each one needs attention.
@@ -571,11 +575,18 @@ function fill(ctx: Ctx) {
 
       // Try the ideal length first, then shorter blocks that can use up a leftover gap.
       let best: { date: string; start: number; len: number; score: number } | null = null;
-      for (const tryLen of [len, 35, 25].filter((l, i) => i === 0 || (l < len && l <= left + 10))) {
+      const weekBudget = weekDays.reduce((n, d) => n + (ctx.budget.get(d) ?? 0), 0);
+      const weekUsed = weekDays.reduce((n, d) => n + (ctx.placed.get(d) ?? 0), 0);
+      // First keep to each day's even share; if the week still has room but no single day
+      // does, let a day go up to its hard ceiling instead.
+      const attempts = [len, 35, 25].filter((l, i) => i === 0 || (l < len && l <= left + 10)).flatMap((l) => [{ l, relaxed: false }, { l, relaxed: true }]);
+      for (const { l: tryLen, relaxed } of attempts.sort((a, b) => Number(a.relaxed) - Number(b.relaxed))) {
+        if (relaxed && weekUsed + tryLen > weekBudget + 15) continue;
         for (const d of weekDays) {
           const budget = ctx.budget.get(d) ?? 0;
           const used = ctx.placed.get(d) ?? 0;
-          if (budget <= 0 || used + tryLen > budget + 15) continue;
+          if (budget <= 0) continue;
+          if (relaxed ? used + tryLen > (ctx.cap.get(d) ?? 0) : used + tryLen > budget + 15) continue;
           const next = nextExam(input, subjectId, d);
           const sameDay = occupiedBySubject(ctx, d, subjectId);
           if (sameDay >= (next && next.days <= 3 ? 3 : 2)) continue;
